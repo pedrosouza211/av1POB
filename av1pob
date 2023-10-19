@@ -1,0 +1,140 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Produto {
+    private int id;
+    private String nome;
+    private double preco;
+
+    public Produto(int id, String nome, double preco) {
+        this.id = id;
+        this.nome = nome;
+        this.preco = preco;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Nome: " + nome + ", Preço: " + preco;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        List<Produto> listaProdutos = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        int opcao;
+
+        do {
+            System.out.println("\nEscolha uma opção:");
+            System.out.println("1. Adicionar Produto");
+            System.out.println("2. Listar Produtos");
+            System.out.println("3. Atualizar Produto");
+            System.out.println("4. Excluir Produto");
+            System.out.println("0. Sair");
+            opcao = scanner.nextInt();
+
+            switch (opcao) {
+                case 1:
+                    adicionarProduto(listaProdutos, scanner);
+                    break;
+                case 2:
+                    listarProdutos(listaProdutos);
+                    break;
+                case 3:
+                    atualizarProduto(listaProdutos, scanner);
+                    break;
+                case 4:
+                    excluirProduto(listaProdutos, scanner);
+                    break;
+                case 0:
+                    System.out.println("Encerrando o programa.");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        } while (opcao != 0);
+
+        scanner.close();
+    }
+
+    private static void adicionarProduto(List<Produto> lista, Scanner scanner) {
+        System.out.print("Informe o nome do produto: ");
+        String nome = scanner.next();
+        System.out.print("Informe o preço do produto: ");
+        double preco = scanner.nextDouble();
+
+        int novoId = lista.size() + 1;
+        Produto produto = new Produto(novoId, nome, preco);
+        lista.add(produto);
+
+        System.out.println("Produto adicionado com sucesso!");
+    }
+
+    private static void listarProdutos(List<Produto> lista) {
+        if (lista.isEmpty()) {
+            System.out.println("Nenhum produto na lista.");
+        } else {
+            System.out.println("Lista de Produtos:");
+            for (Produto produto : lista) {
+                System.out.println(produto);
+            }
+        }
+    }
+
+    private static void atualizarProduto(List<Produto> lista, Scanner scanner) {
+        listarProdutos(lista);
+
+        if (!lista.isEmpty()) {
+            System.out.print("Informe o ID do produto que deseja atualizar: ");
+            int id = scanner.nextInt();
+
+            for (Produto produto : lista) {
+                if (produto.getId() == id) {
+                    System.out.print("Informe o novo preço: ");
+                    double novoPreco = scanner.nextDouble();
+                    produto.setPreco(novoPreco);
+                    System.out.println("Produto atualizado com sucesso!");
+                    return;
+                }
+            }
+
+            System.out.println("Produto não encontrado com o ID informado.");
+        }
+    }
+
+    private static void excluirProduto(List<Produto> lista, Scanner scanner) {
+        listarProdutos(lista);
+
+        if (!lista.isEmpty()) {
+            System.out.print("Informe o ID do produto que deseja excluir: ");
+            int id = scanner.nextInt();
+
+            for (Produto produto : lista) {
+                if (produto.getId() == id) {
+                    lista.remove(produto);
+                    System.out.println("Produto excluído com sucesso!");
+                    return;
+                }
+            }
+
+            System.out.println("Produto não encontrado com o ID informado.");
+        }
+    }
+}
